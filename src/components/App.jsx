@@ -10,20 +10,15 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 export class App extends Component {
   state = {
     searchQuery: '',
+    selectedImgCard: null,
     page: 1,
     totalHits: 0,
     imageCards: [],
     loading: false,
     showModal: false,
-    selectedImgCard: null,
     perPage: 12,
   };
 
-  // метод обрабатывает изменения searchQuery и page,
-  // и отправляет запрос на сервер с помощью FetchApi
-  // для получения картинок. Если запрос не удался,
-  // то он уведомляет пользователя об ошибке с помощью
-  //  Notify.
   componentDidUpdate(_, prevState) {
     if (
       this.state.searchQuery !== prevState.searchQuery ||
@@ -63,28 +58,22 @@ export class App extends Component {
     }
   }
 
-  // onSubmit()вызываем при отправке формы поиска. Он устанавливает
-  // новое значение для searchQuery, если оно отличается от предыдущего значения.
   onSubmit = inputValue => {
     if (this.state.searchQuery !== inputValue) {
       this.setState({ searchQuery: inputValue, imageCards: [], page: 1 });
     }
   };
 
-  // при нажатии кнопки увеличиваем значение page на 1
   onLoadBtnClick = () => {
     this.setState(({ page }) => ({
       page: page + 1,
     }));
   };
 
-  // переключает значение showModal между true и false
   toggleModal = () => {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
-  // вызываем при клике на картинку,  устанавливаем ее как
-  // selectedImgCard и отображаем в модальном окне
   onImgClick = imgId => {
     const imageCard = this.state.imageCards.find(
       imageCard => imageCard.id === imgId
@@ -101,7 +90,6 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={this.onSubmit} />
 
-        {/* проверяем, есть ли imageCards, и если да, то отображаем галерею */}
         {imageCards.length > 0 && (
           <ImageGallery
             imageCardsArray={imageCards}
@@ -113,10 +101,8 @@ export class App extends Component {
           <Modal onClose={this.toggleModal} selectedImgCard={selectedImgCard} />
         )}
 
-        {/*  Если loading true, то отображаем индикатор загрузки Loader */}
         {loading && <Loader />}
 
-        {/* если картинок пришло больше 12, отображается кнопка Load more... */}
         {page * 12 <= totalHits && <Button onClick={this.onLoadBtnClick} />}
       </div>
     );

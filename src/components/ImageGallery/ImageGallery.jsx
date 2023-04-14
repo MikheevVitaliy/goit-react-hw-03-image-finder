@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
-export const ImageGallery = ({ imageCardsArray, onImgClick }) => {
+export const ImageGallery = ({ imageCardsArray, onImgClick, toggleModal }) => {
   return (
     <ul className={css.ImageGallery}>
       {imageCardsArray.map(({ id, webformatURL, tags }) => (
